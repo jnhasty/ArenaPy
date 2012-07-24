@@ -1,12 +1,14 @@
+# -*- coding: utf-8 -*-
 from setuptools import setup
 
 setup(
     name='arenapy',
-    version='0.1',
+    version='0.1.0',
     description='A simple python interface to the Are.na api',
+    long_description=open('README.md').read(),
     author='jnhasty',
     author_email='jnhasty@gmail.com',
-    url='http://are.na',
+    url='https://github.com/jnhasty/arenapy',
     packages=['arenapy'],
     classifiers=[
         "License :: OSI Approved :: MIT License",
@@ -18,7 +20,7 @@ setup(
     keywords='arena rest api client',
     license='MIT',
     install_requires=[
-        'setuptools',
         'requests',
     ],
+    zip_safe=False
 )

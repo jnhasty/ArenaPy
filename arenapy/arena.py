@@ -12,7 +12,6 @@ class ArenaPy(object):
 
     def __init__(self):
         self.base_url = BASE_URL
-        self.api_callback = API_CALLBACK
 
     def make_request(self, url_frag):
         '''

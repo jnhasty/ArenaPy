@@ -7,7 +7,7 @@ Requires requests (https://github.com/kennethreitz/requests) to handle http inte
 
 Typical Usage:
 
-    from arena import ArenaPy    
+    from arenapy import ArenaPy  
     arena_connect = ArenaPy()
     user_channel_json = arena_connect.get_users_channels('nick-hasty')
     

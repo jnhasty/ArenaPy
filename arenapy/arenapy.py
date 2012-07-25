@@ -4,8 +4,6 @@ from operator import itemgetter
 
 import requests
 
-__version__ = '0.1.0'
-
 API_VERSION = 'v1'
 BASE_URL = 'http://are.na/api/%s' % API_VERSION
 

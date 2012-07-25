@@ -166,7 +166,7 @@ class ArenaPy(object):
         if blocks_list:
             return [block for block in blocks_list if block['block_class'] == 'link']
         else:
-        +    return None
+            return None
 
     def get_links_blocks_count(self, blocks_list):
         if self.get_channel_text(blocks_list):

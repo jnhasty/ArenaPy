@@ -29,7 +29,7 @@ class ArenaPy(object):
     #######
     def get_channel(self, channel):   
         '''
-        + returns a channel dict:
+        + returns a channel dictionary:
             username, channels, slug, user_id, memberships,
             blocks_count, title, type, created_at, last_block_updated_at,
             updated_at, collaboration, channel_type, avatar, published,
@@ -86,37 +86,65 @@ class ArenaPy(object):
     # channel basics
     #
     def get_channel_title(self, channel):
+        '''
+        + return a channel's title
+        
+        + to be used with get_channel()
+        '''
         return channel.get('title')
 
     #
     # channel channels
     #
     def get_channel_channels(self, channel):
+        '''
+        + given a channel dict, returns list of channels 
+            within a channel if exists
+
+        + to be used with get_channel()
+        '''
         return channel.get('channels')
 
     def get_channel_channels_count(self, channel):
+        '''
+        + returns number of channels in a channel
+
+        + to be used with get_channel() 
+        '''
         if self.get_channel_channels(channel):
             return len(self.get_channel_channels(channel))
 
     #
     # channel blocks
     #
+
+    def get_channel_blocks(self, channel):
+        '''
+        + given a channel dict, returns list of blocks 
+            within a channel if exists
+
+        + to be used with get_channel()
+        '''
+        return channel.get('blocks')
+
     def get_channel_block_count(self, channel):
         return channel.get('blocks_count')
 
-    def sort_channel_blocks_by_created(self, channel, sort_by = 'desc'):
+    #
+    # block sorting
+    #
+    def sort_blocks_by_created(self, blocks_list, sort_by = 'desc'):
         '''
-        sort a channel's blocks by created timestamp
-        sort_by asc or desc, default = desc (newest)
+        + sort a list of blocks by created timestamp
+        
+        + sort_by asc or desc, default = desc (newest)
         '''
-        blocks = channel.get('blocks')
-        if blocks:
+        if blocks_list:
             if sort_by == 'asc':
-                blocks = sorted(blocks, key=itemgetter('created_at')) 
+                blocks_list = sorted(blocks_list, key=itemgetter('created_at')) 
             else:
-                blocks = sorted(blocks, key=itemgetter('created_at'), reverse=True) 
-            channel['blocks'] = blocks
-            return channel
+                blocks_list = sorted(blocks_list, key=itemgetter('created_at'), reverse=True) 
+            return blocks_list
         else:
             return None
 
@@ -124,18 +152,30 @@ class ArenaPy(object):
     #  block filtering: all take a list of blocks
     #
     def get_image_blocks(self, blocks_list):
+        '''
+        + given a list of blocks, will return a new list 
+            comprised solely of image blocks 
+        '''
         if blocks_list:
             return [block for block in blocks_list if block['block_class'] == 'image']
         else:
             return None
 
     def get_image_blocks_count(self, blocks_list):
+        '''
+        + given a list of blocks, returns the number
+            of image blocks in the list 
+        '''
         if self.get_channel_images(channel):
             return len(self.get_channel_images(channel))
         else:
             return None
 
     def get_media_blocks(self, blocks_list):
+        '''
+        + given a list of blocks, will return a new list 
+            comprised solely of media blocks 
+        '''
         if blocks_list:
             for b in blocks_list:
                 print b
@@ -145,30 +185,50 @@ class ArenaPy(object):
             return None
 
     def get_media_blocks_count(self, blocks_list):
+        '''
+        + given a list of blocks, returns the number
+            of media blocks in the list
+        '''
         if self.get_channel_media(channel):
             return len(self.get_channel_media(channel))
         else:
             return None
 
     def get_text_blocks(self, blocks_list):
+        '''
+        + given a list of blocks, will return a new list 
+            comprised solely of text blocks 
+        '''
         if blocks_list:
             return [block for block in blocks_list if block['block_class'] == 'text']
         else:
             return None
 
     def get_text_blocks_count(self, blocks_list):
+        '''
+        + given a list of blocks, returns the number
+            of text blocks in the list
+        '''
         if self.get_channel_text(channel):
             return len(self.get_channel_text(channel))
         else:
             return None
 
     def get_links_blocks(self, blocks_list):
+        '''
+        + given a list of blocks, will return a new list 
+            comprised solely of links blocks 
+        '''
         if blocks_list:
             return [block for block in blocks_list if block['block_class'] == 'link']
         else:
             return None
 
     def get_links_blocks_count(self, blocks_list):
+        '''
+        + given a list of blocks, returns the number
+            of link blocks in the list
+        '''
         if self.get_channel_text(blocks_list):
             return len(self.get_channel_text(channel))
         else:
@@ -179,7 +239,8 @@ class ArenaPy(object):
     #
     def get_channel_connections(self, channel):
         '''
-        returns all connections in a channel, removes dupes
+        + given a channel dictionary, returns list
+           of channel's unique connections 
         '''
         connections = [block['connections'] for block in channel['blocks']]
         flattened = [connection for sublist in connections for connection in sublist]
@@ -194,7 +255,7 @@ class ArenaPy(object):
 
     def get_channel_connections_count(self, channel):
         '''
-        returns count of unique connections
+        + returns count of channel's unique connections
         '''
         if self.get_channel_connections(channel):
             return len(self.get_channel_connections(channel))

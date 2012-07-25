@@ -2,10 +2,10 @@
 from setuptools import setup
 
 setup(
-    name='arenapy',
+    name='ArenaPy',
     version='0.1.0',
     description='A simple python interface to the Are.na api',
-    long_description=open('README.md').read(),
+    long_description=open('README.txt').read(),
     author='jnhasty',
     author_email='jnhasty@gmail.com',
     url='https://github.com/jnhasty/arenapy',

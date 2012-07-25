@@ -2,3 +2,4 @@
 *.swp
 dist/*
 MANIFEST.in
+ArenaPy.egg-info/*

@@ -82,24 +82,29 @@ class ArenaPy(object):
     #######
 
     #
-    # channel basics
+    # CHANNEL FUNCTIONS
     #
     def get_channel_title(self, channel):
         '''
         + return a channel's title
-        
         + to be used with get_channel()
         '''
         return channel.get('title')
 
-    #
-    # channel channels
-    #
+    # def get_channel_meta(self, channel):?????????
+
+    def get_channel_content(self, channel):
+        '''
+        returns a channels blocks and channels 
+        as one flat dictionary
+        '''
+        content = dict(channel.get('channels'))
+        return content.update(channel.get('blocks'))
+
     def get_channel_channels(self, channel):
         '''
         + given a channel dict, returns list of channels 
             within a channel if exists
-
         + to be used with get_channel()
         '''
         return channel.get('channels')
@@ -107,21 +112,15 @@ class ArenaPy(object):
     def get_channel_channels_count(self, channel):
         '''
         + returns number of channels in a channel
-
         + to be used with get_channel() 
         '''
         if self.get_channel_channels(channel):
             return len(self.get_channel_channels(channel))
 
-    #
-    # channel blocks
-    #
-
     def get_channel_blocks(self, channel):
         '''
         + given a channel dict, returns list of blocks 
             within a channel if exists
-
         + to be used with get_channel()
         '''
         return channel.get('blocks')
@@ -129,9 +128,44 @@ class ArenaPy(object):
     def get_channel_block_count(self, channel):
         return channel.get('blocks_count')
 
+    def get_channel_connections(self, channel):
+        '''
+        + given a channel dictionary, returns list
+           of channel's unique connections 
+        '''
+        connections = [block['connections'] for block in channel['blocks']]
+        flattened = [connection for sublist in connections for connection in sublist]
+        seen = set()
+        uniques = []
+        for f in flattened:
+            key = f['channel_id']
+            if key not in seen:
+                seen.add(key)
+                uniques.append(f)
+        return uniques
+
+    def get_channel_connections_count(self, channel):
+        '''
+        + returns count of channel's unique connections
+        '''
+        if self.get_channel_connections(channel):
+            return len(self.get_channel_connections(channel))
+        else:
+            return None
+
+
     #
-    # block sorting
+    # BLOCK FUNCTIONS
     #
+
+    def get_connections_for_block(self, block_dict):
+        '''
+        + given a channel dict, returns list of channels 
+            within a channel if exists
+        + to be used with get_channel()
+        '''
+        return block_dict.get('connections')
+
     def sort_blocks_by_created(self, blocks_list, sort_by = 'desc'):
         '''
         + sort a list of blocks by created timestamp
@@ -147,9 +181,6 @@ class ArenaPy(object):
         else:
             return None
 
-    #
-    #  block filtering: all take a list of blocks
-    #
     def get_image_blocks(self, blocks_list):
         '''
         + given a list of blocks, will return a new list 
@@ -233,30 +264,4 @@ class ArenaPy(object):
         else:
             return None
 
-    #
-    # channel connections
-    #
-    def get_channel_connections(self, channel):
-        '''
-        + given a channel dictionary, returns list
-           of channel's unique connections 
-        '''
-        connections = [block['connections'] for block in channel['blocks']]
-        flattened = [connection for sublist in connections for connection in sublist]
-        seen = set()
-        uniques = []
-        for f in flattened:
-            key = f['channel_id']
-            if key not in seen:
-                seen.add(key)
-                uniques.append(f)
-        return uniques
 
-    def get_channel_connections_count(self, channel):
-        '''
-        + returns count of channel's unique connections
-        '''
-        if self.get_channel_connections(channel):
-            return len(self.get_channel_connections(channel))
-        else:
-            return None

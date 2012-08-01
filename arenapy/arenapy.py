@@ -98,8 +98,10 @@ class ArenaPy(object):
         returns a channels blocks and channels 
         as one flat dictionary
         '''
-        content = dict(channel.get('channels'))
-        return content.update(channel.get('blocks'))
+        content = channel.get('blocks')
+        if channel.get('channels'):
+            content = content.update(channel.get('channels'))
+        return content
 
     def get_channel_channels(self, channel):
         '''
@@ -137,11 +139,11 @@ class ArenaPy(object):
         flattened = [connection for sublist in connections for connection in sublist]
         seen = set()
         uniques = []
-        for f in flattened:
-            key = f['channel_id']
-            if key not in seen:
+        for connection in flattened:
+            key = connection['channel_id']
+            if key not in seen and key != channel['id']:
                 seen.add(key)
-                uniques.append(f)
+                uniques.append(connection)
         return uniques
 
     def get_channel_connections_count(self, channel):
